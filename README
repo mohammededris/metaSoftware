@@ -1,0 +1,135 @@
+# Meta Software
+
+This project is a Node.js + Express API for user authentication and post management. It uses MongoDB as the database and stores users and posts in collections managed by Mongoose models.
+
+## 1. Project Overview
+
+The application exposes a simple backend for:
+
+- creating accounts and logging in users
+- generating JWT-based authentication tokens
+- creating, reading, updating, and deleting posts
+- validating incoming request data
+
+## 2. Tech Stack
+
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- bcrypt
+- Joi
+
+## 3. Local Setup
+
+### Prerequisites
+
+- Node.js installed
+- MongoDB running locally or a MongoDB Atlas connection string
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Configure environment variables
+
+Create a `.env` file in the project root with the following values:
+
+```env
+PORT=5000
+MONGODB_URI=mongodb://localhost:27017/meta-software
+JWT_SECRET=your_super_secret_key
+```
+
+### Run the project
+
+Start the server in development mode:
+
+```bash
+npm run dev
+```
+
+Or start normally:
+
+```bash
+npm start
+```
+
+The server will run on the port defined in `PORT`.
+
+## 4. Implemented Endpoints
+
+### Authentication
+
+| Method | Route            | Description             |
+| ------ | ---------------- | ----------------------- |
+| POST   | `/auth/register` | Register a new user     |
+| POST   | `/auth/login`    | Log in an existing user |
+
+### Posts
+
+| Method | Route        | Description                                           |
+| ------ | ------------ | ----------------------------------------------------- |
+| GET    | `/posts`     | Get all posts                                         |
+| POST   | `/posts`     | Create a new post (requires authentication)           |
+| PUT    | `/posts/:id` | Update a post (requires authentication and ownership) |
+| DELETE | `/posts/:id` | Delete a post (requires authentication and ownership) |
+
+### Auth Header
+
+Protected routes expect a Bearer token in the Authorization header:
+
+```http
+authorization: Bearer <token>
+```
+
+## 5. Database Choice
+
+This project uses MongoDB because it is a good fit for a lightweight backend API with flexible document-based data.
+
+Why MongoDB:
+
+- easy to store user and post records as documents
+- works well with JavaScript/Node.js applications
+- fast to set up for small to medium-sized APIs
+- integrates smoothly with Mongoose for schema validation and query handling
+
+MongoDB is especially suitable here because the data is not highly relational, and the application mainly deals with simple user and post records.
+
+## 6. Project Structure
+
+```text
+.
+├── Controllers/
+│   ├── posts.js
+│   └── users.js
+├── Middlewares/
+│   ├── auth.js
+│   └── Validations/
+│       ├── post.js
+│       ├── user.js
+│       └── validate.js
+├── Models/
+│   ├── Post.js
+│   └── User.js
+├── Routes/
+│   ├── posts.js
+│   └── users.js
+├── .env
+├── index.js
+├── package.json
+├── README.md
+```
+
+## 7. Notes
+
+- Passwords are hashed using `bcrypt` before being stored.
+- JWT tokens are used for authenticated access to post routes.
+- Incoming payloads are validated using `Joi` before processing.
+
+## License
+
+ISC

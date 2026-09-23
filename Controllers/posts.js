@@ -50,6 +50,16 @@ const updatePost = async (req, res) => {
 
 // DELETE /posts/:id: Protected route to delete a post (only if the user is the owner).
 const deletePost = async (req, res) => {
+  const post = await Posts.findById(req.params.id);
+
+  if (!post) {
+    return res.status(404).json({ message: "Post not found" });
+  }
+
+  if (post.authorId !== req.user.id) {
+    return res.status(403).json({ message: "Access denied" });
+  }
+
   try {
     const { id } = req.params;
     await Posts.findByIdAndDelete(id);
